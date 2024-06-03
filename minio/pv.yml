@@ -18,4 +18,4 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - agro
+                - microk8s-vm

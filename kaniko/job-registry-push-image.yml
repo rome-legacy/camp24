@@ -1,0 +1,45 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: kaniko
+  name: registry-push-backend
+spec:
+  template:
+    spec:
+      volumes:
+        - name: ca-certificates
+          configMap:
+            name: conf-ca-cert-kaniko
+            items:
+              - key: 'ca-certificates.crt'
+                path: 'ca-certificates.crt'
+#        - name: registry-auth
+#          secret:
+#            secretName: registry-auth
+#        - name: registry-auth
+#          configMap:
+#            name: docker-auth
+      containers:
+        - name: kaniko
+          image: gcr.io/kaniko-project/executor:latest
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "1Gi"
+          args:
+            - "--dockerfile=./backend.dockerfile"
+#            - "--context=https://minio-svc.minio.svc.cluster.local:9000/kaniko/backend.tar.gz"
+            - "--context=git://github.com/fif911/kubernetes-front-end-backend-example.git#refs/heads/master"
+            - "--context-sub-path=backend"
+            - "--destination=registry.container-registry.svc.cluster.local:5000/camp/camp:latest"
+            - "--insecure"
+            - "--skip-tls-verify"
+            - "--verbosity=info"
+          volumeMounts:
+            - name: ca-certificates
+              mountPath: '/kaniko/ssl/certs'
+              readOnly: true
+#            - name: registry-auth
+#              mountPath: '/kaniko/.docker'
+      restartPolicy: Never
+  backoffLimit: 2

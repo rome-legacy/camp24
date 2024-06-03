@@ -15,3 +15,4 @@
 192.168.64.5       minio.k8s.camp
 192.168.64.5       minio-console.k8s.camp
 192.168.64.5       dashboard.k8s.camp
+192.168.64.5       registry.k8s.camp

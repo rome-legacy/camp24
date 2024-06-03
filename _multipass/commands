@@ -2,6 +2,8 @@ multipass list
 multipass shell microk8s-vm
 ip addr show -> IP=192.168.64.5
 
+https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/
+
 dashboard:
 microk8s enable dashboard
 multipass exec microk8s-vm -- sudo /snap/bin/microk8s kubectl -n kube-system describe secret $(multipass exec microk8s-vm -- sudo /snap/bin/microk8s kubectl -n kube-system get secret | grep default-token | cut -d " " -f1)

@@ -5,7 +5,7 @@ metadata:
   name: minio-pvc
 spec:
   storageClassName: minio-sc
-#  volumeName: minio-pv
+  volumeName: minio-pv
   accessModes:
     - ReadWriteMany
   resources:

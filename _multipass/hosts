@@ -13,3 +13,5 @@
 192.168.64.5       keycloak.gamehub.zch
 
 192.168.64.5       minio.k8s.camp
+192.168.64.5       minio-console.k8s.camp
+192.168.64.5       dashboard.k8s.camp

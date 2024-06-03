@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: minio
+  # This name uniquely identifies the Deployment
+  name: minio-dep
+  labels:
+    app: minio
+spec:
+  selector:
+    matchLabels:
+      app: minio # has to match .spec.template.metadata.labels
+  strategy:
+    # Specifies the strategy used to replace old Pods by new ones
+    # Refer: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        # This label is used as a selector in Service definition
+        app: minio
+    spec:
+      # Volumes used by this deployment
+      volumes:
+        - name: data
+          # This volume is based on PVC
+          persistentVolumeClaim:
+            # Name of the PVC created earlier
+            claimName: minio-pvc
+      containers:
+        - name: minio
+          resources:
+            limits:
+              memory: "2Gi"
+              cpu: "1000m" # 1 cpu = 1000 milli-cpu
+          # Volume mounts for this container
+          volumeMounts:
+            # Volume 'data' is mounted to path '/data'
+            - name: data
+              mountPath: /data
+          # Pulls the latest Minio image from Docker Hub
+          image: minio/minio:RELEASE.2023-01-12T02-06-16Z
+          args:
+            - server
+            - /data
+            - --console-address
+            - ":9001"
+          env:
+            # MinIO access key and secret key
+            - name: MINIO_ROOT_USER
+              value: "minio"
+            - name: MINIO_ROOT_PASSWORD
+              value: "camp24"
+          ports:
+            - containerPort: 9000
+          # Readiness probe detects situations when MinIO server instance
+          # is not ready to accept traffic. Kubernetes doesn't forward
+          # traffic to the pod while readiness checks fail.
+          readinessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /minio/health/ready
+              port: 9000
+            initialDelaySeconds: 10
+            periodSeconds: 20
+            failureThreshold: 2
+          # Liveness probe detects situations where MinIO server instance
+          # is not working properly and needs restart. Kubernetes automatically
+          # restarts the pods if liveness checks fail.
+          livenessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /minio/health/live
+              port: 9000
+            initialDelaySeconds: 20
+            periodSeconds: 20
+            failureThreshold: 2

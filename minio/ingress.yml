@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: minio
+  name: minio-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 100m
+spec:
+  rules:
+    - host: minio-console.k8s.camp
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: minio-svc
+                port:
+                  number: 9001
+    - host: minio.k8s.camp
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: minio-svc
+                port:
+                  number: 9000

@@ -1,0 +1,9 @@
+multipass list
+multipass shell microk8s-vm
+ip addr show -> IP=192.168.64.5
+
+
+
+
+minio:
+brew install minio/stable/mc

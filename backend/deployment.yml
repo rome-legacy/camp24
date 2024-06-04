@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: backend
+  name: k8app-backend-config
+  labels:
+    app: k8app-backend
+data:
+  SERVER_NAME: server
+  SERVER_HOST: http://localhost
+  BACKEND_CORS_ORIGINS: '["http://localhost", "http://k8s.camp", "http://k8s.camp:80", "http://k8s.camp:3001", "https://localhost", "https://k8s.camp", "https://k8s.camp:443", "https://k8s.camp:4001"]'
+  PROJECT_NAME: k8app
+  POSTGRES_SERVER: postgres
+  SECRET_KEY: 99d3b1f01aa639e4a76f4fc281fc834747a543720ba4c8a8648ba755aef9be7f
+  # POSTGRES_PASSWORD: pass

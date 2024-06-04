@@ -9,7 +9,13 @@ microk8s enable dashboard
 multipass exec microk8s-vm -- sudo /snap/bin/microk8s kubectl -n kube-system describe secret $(multipass exec microk8s-vm -- sudo /snap/bin/microk8s kubectl -n kube-system get secret | grep default-token | cut -d " " -f1)
 
 
-
 minio:
 brew install minio/stable/mc
 mc --autocompletion
+
+
+https://github.com/fif911/kubernetes-front-end-backend-example/tree/master/k8s-microk8s
+
+https://github.com/seifrajhi/Kubernetes-practical-exercises-Hands-on
+
+https://github.com/kubernetes/examples

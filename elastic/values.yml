@@ -11,6 +11,13 @@ esConfig:
   elasticsearch.yml: |
     node.store.allow_mmap: false
 
+roles: []
+extraEnvs:
+  - name: discovery.type
+    value: single-node
+  - name: node.roles
+    value: master,data,data_content,data_hot,data_warm,data_cold,ingest,ml,remote_cluster_client,transform
+
 # Permit co-located instances for solitary minikube virtual machines.
 antiAffinity: "soft"
 
